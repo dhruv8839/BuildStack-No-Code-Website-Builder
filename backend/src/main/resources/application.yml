@@ -1,0 +1,66 @@
+spring:
+  application:
+    name: buildstack-backend
+  servlet:
+    multipart:
+      enabled: true
+      max-file-size: 5MB
+      max-request-size: 10MB
+  datasource:
+    url: ${DB_URL:jdbc:postgresql://localhost:5432/buildstack}
+    username: ${DB_USERNAME:postgres}
+    password: ${DB_PASSWORD:postgres}
+    driver-class-name: org.postgresql.Driver
+  jpa:
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
+    hibernate:
+      ddl-auto: update
+    show-sql: false
+    properties:
+      hibernate:
+        format_sql: true
+
+server:
+  port: 8080
+
+springdoc:
+  api-docs:
+    path: /v3/api-docs
+  swagger-ui:
+    path: /swagger-ui.html
+
+jwt:
+  secret: ${JWT_SECRET:404E635266556A586E3272357538782F413F4428472B4B6250655368566D5971}
+  expiration: ${JWT_EXPIRATION:86400000}
+
+logging:
+  level:
+    root: INFO
+    org.springframework: INFO
+    org.hibernate: WARN
+    org.hibernate.SQL: ${DB_LOG_LEVEL:WARN}
+    org.hibernate.type.descriptor.sql.BasicBinder: ${DB_LOG_LEVEL:WARN}
+    com.buildstack: ${APP_LOG_LEVEL:INFO}
+
+storage:
+  local:
+    upload-dir: ${STORAGE_UPLOAD_DIR:uploads}
+    base-url: ${STORAGE_BASE_URL:http://localhost:8080}
+
+---
+spring:
+  config:
+    activate:
+      on-profile: dev
+
+---
+spring:
+  config:
+    activate:
+      on-profile: test
+
+---
+spring:
+  config:
+    activate:
+      on-profile: prod
