@@ -47,9 +47,9 @@ export function Login() {
     height: 42,
     padding: '0 14px',
     borderRadius: 9,
-    border: `1px solid ${hasError ? 'rgba(248,113,113,0.5)' : 'rgba(255,255,255,0.1)'}`,
-    backgroundColor: 'rgba(255,255,255,0.05)',
-    color: '#e4e4e7',
+    border: `1px solid ${hasError ? 'rgba(248,113,113,0.5)' : 'var(--border)'}`,
+    backgroundColor: 'var(--input)',
+    color: 'var(--foreground)',
     fontSize: 14,
     outline: 'none',
     fontFamily: 'inherit',
@@ -60,7 +60,7 @@ export function Login() {
   return (
     <div style={{
       minHeight: '100vh',
-      backgroundColor: '#09090b',
+      backgroundColor: 'var(--background)',
       display: 'flex',
       flexDirection: 'column',
       alignItems: 'center',
@@ -78,23 +78,23 @@ export function Login() {
         }}>
           <span style={{ color: 'white', fontWeight: 800, fontSize: 18 }}>B</span>
         </div>
-        <span style={{ fontSize: 20, fontWeight: 700, color: '#e4e4e7' }}>BuildStack</span>
+        <span style={{ fontSize: 20, fontWeight: 700, color: 'var(--foreground)' }}>BuildStack</span>
       </div>
 
       {/* Card */}
       <div style={{
         width: '100%', maxWidth: 400,
-        backgroundColor: '#111113',
-        border: '1px solid rgba(255,255,255,0.08)',
+        backgroundColor: 'var(--card)',
+        border: '1px solid var(--border)',
         borderRadius: 16,
         padding: '32px 32px 28px',
-        boxShadow: '0 20px 60px rgba(0,0,0,0.5)',
+        boxShadow: '0 20px 60px rgba(0,0,0,0.3)',
       }}>
         <div style={{ marginBottom: 24 }}>
-          <h1 style={{ fontSize: 22, fontWeight: 700, color: '#e4e4e7', margin: 0 }}>
+          <h1 style={{ fontSize: 22, fontWeight: 700, color: 'var(--foreground)', margin: 0 }}>
             Welcome back
           </h1>
-          <p style={{ fontSize: 13, color: '#71717a', marginTop: 6 }}>
+          <p style={{ fontSize: 13, color: 'var(--muted-foreground)', marginTop: 6 }}>
             Sign in to your BuildStack account
           </p>
         </div>
@@ -102,7 +102,7 @@ export function Login() {
         <form onSubmit={handleSubmit}>
           {/* Email */}
           <div style={{ marginBottom: 14 }}>
-            <label style={{ display: 'block', fontSize: 12, fontWeight: 500, color: '#a1a1aa', marginBottom: 6 }}>
+            <label style={{ display: 'block', fontSize: 12, fontWeight: 500, color: 'var(--muted-foreground)', marginBottom: 6 }}>
               Email Address
             </label>
             <input
@@ -113,13 +113,13 @@ export function Login() {
               onChange={(e) => setEmail(e.target.value)}
               style={inputStyle(!!error)}
               onFocus={(e) => { (e.target as HTMLInputElement).style.borderColor = 'rgba(99,102,241,0.5)' }}
-              onBlur={(e) => { (e.target as HTMLInputElement).style.borderColor = error ? 'rgba(248,113,113,0.5)' : 'rgba(255,255,255,0.1)' }}
+              onBlur={(e) => { (e.target as HTMLInputElement).style.borderColor = error ? 'rgba(248,113,113,0.5)' : 'var(--border)' }}
             />
           </div>
 
           {/* Password */}
           <div style={{ marginBottom: 22 }}>
-            <label style={{ display: 'block', fontSize: 12, fontWeight: 500, color: '#a1a1aa', marginBottom: 6 }}>
+            <label style={{ display: 'block', fontSize: 12, fontWeight: 500, color: 'var(--muted-foreground)', marginBottom: 6 }}>
               Password
             </label>
             <div style={{ position: 'relative' }}>
@@ -131,14 +131,14 @@ export function Login() {
                 onChange={(e) => setPassword(e.target.value)}
                 style={{ ...inputStyle(!!error), paddingRight: 40 }}
                 onFocus={(e) => { (e.target as HTMLInputElement).style.borderColor = 'rgba(99,102,241,0.5)' }}
-                onBlur={(e) => { (e.target as HTMLInputElement).style.borderColor = error ? 'rgba(248,113,113,0.5)' : 'rgba(255,255,255,0.1)' }}
+                onBlur={(e) => { (e.target as HTMLInputElement).style.borderColor = error ? 'rgba(248,113,113,0.5)' : 'var(--border)' }}
               />
               <button
                 type="button"
                 onClick={() => setShowPassword(!showPassword)}
                 style={{
                   position: 'absolute', right: 12, top: '50%', transform: 'translateY(-50%)',
-                  background: 'none', border: 'none', cursor: 'pointer', color: '#52525b', padding: 0,
+                  background: 'none', border: 'none', cursor: 'pointer', color: 'var(--muted-foreground)', padding: 0,
                 }}
               >
                 {showPassword ? <EyeOff size={15} /> : <Eye size={15} />}
@@ -182,7 +182,7 @@ export function Login() {
           </button>
         </form>
 
-        <p style={{ textAlign: 'center', fontSize: 13, color: '#52525b', marginTop: 20 }}>
+        <p style={{ textAlign: 'center', fontSize: 13, color: 'var(--muted-foreground)', marginTop: 20 }}>
           Don't have an account?{' '}
           <Link to="/register" style={{ color: '#818cf8', textDecoration: 'none', fontWeight: 500 }}>
             Create one free →
@@ -190,7 +190,7 @@ export function Login() {
         </p>
       </div>
 
-      <p style={{ fontSize: 11, color: '#3f3f46', marginTop: 20 }}>
+      <p style={{ fontSize: 11, color: 'var(--muted-foreground)', marginTop: 20, opacity: 0.6 }}>
         BuildStack — No-code website builder
       </p>
     </div>

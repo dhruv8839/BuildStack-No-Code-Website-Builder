@@ -91,7 +91,7 @@ export function TopToolbar({ project, activePageId }: TopToolbarProps) {
     padding: '0 12px',
     fontSize: 12,
     fontWeight: 500,
-    backgroundColor: 'rgba(255,255,255,0.04)',
+    backgroundColor: 'var(--studio-bg)',
     color: 'var(--studio-text)',
     border: '1px solid var(--studio-border)',
   }
@@ -165,7 +165,7 @@ export function TopToolbar({ project, activePageId }: TopToolbarProps) {
         <div 
           className="flex items-center gap-0.5"
           style={{ 
-            backgroundColor: 'rgba(255,255,255,0.04)',
+            backgroundColor: 'var(--studio-bg)',
             borderRadius: 8,
             padding: 3,
             border: '1px solid var(--studio-border)',

@@ -73,8 +73,8 @@ export function SectionsPanel() {
               width: '100%',
               padding: '6px 28px 6px 26px',
               fontSize: 11,
-              backgroundColor: 'rgba(255,255,255,0.04)',
-              border: '1px solid rgba(255,255,255,0.08)',
+              backgroundColor: 'var(--studio-bg)',
+              border: '1px solid var(--studio-border)',
               borderRadius: 7,
               color: 'var(--studio-text)',
               outline: 'none',
@@ -120,8 +120,8 @@ export function SectionsPanel() {
                 borderRadius: 6,
                 fontSize: 10,
                 fontWeight: isActive ? 700 : 500,
-                border: isActive ? '1px solid rgba(99,102,241,0.4)' : '1px solid rgba(255,255,255,0.06)',
-                backgroundColor: isActive ? 'rgba(99,102,241,0.15)' : 'rgba(255,255,255,0.02)',
+                border: isActive ? '1px solid rgba(99,102,241,0.4)' : '1px solid var(--studio-border)',
+                backgroundColor: isActive ? 'rgba(99,102,241,0.15)' : 'var(--studio-bg)',
                 color: isActive ? '#818cf8' : 'var(--studio-text-muted)',
                 cursor: 'pointer',
                 transition: 'all 0.12s ease',
@@ -157,8 +157,8 @@ export function SectionsPanel() {
                   gap: 10,
                   padding: '10px 12px',
                   borderRadius: 9,
-                  border: '1px solid rgba(255,255,255,0.06)',
-                  backgroundColor: 'rgba(255,255,255,0.03)',
+                  border: '1px solid var(--studio-border)',
+                  backgroundColor: 'var(--studio-bg)',
                   textAlign: 'left',
                   cursor: 'pointer',
                   transition: 'all 0.15s ease',
@@ -171,8 +171,8 @@ export function SectionsPanel() {
                 }}
                 onMouseLeave={(e) => {
                   const el = e.currentTarget as HTMLButtonElement;
-                  el.style.borderColor = 'rgba(255,255,255,0.06)';
-                  el.style.backgroundColor = 'rgba(255,255,255,0.03)';
+                  el.style.borderColor = 'var(--studio-border)';
+                  el.style.backgroundColor = 'var(--studio-bg)';
                 }}
               >
                 {/* Thumbnail */}

@@ -120,15 +120,15 @@ export function ThemePanel() {
                     justifyContent: 'space-between',
                     padding: '10px 10px',
                     borderRadius: 8,
-                    border: isActive ? '2px solid #6366f1' : '1px solid rgba(255,255,255,0.08)',
-                    backgroundColor: isActive ? 'rgba(99,102,241,0.15)' : 'rgba(255,255,255,0.03)',
+                    border: isActive ? '2px solid #6366f1' : '1px solid var(--studio-border)',
+                    backgroundColor: isActive ? 'rgba(99,102,241,0.15)' : 'var(--studio-bg)',
                     cursor: 'pointer',
                     transition: 'all 0.15s ease',
                     textAlign: 'left',
                   }}
                 >
                   <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 8, width: '100%' }}>
-                    <span style={{ fontSize: 11, fontWeight: 600, color: isActive ? '#818cf8' : 'white' }}>
+                    <span style={{ fontSize: 11, fontWeight: 600, color: isActive ? '#818cf8' : 'var(--studio-text)' }}>
                       {p.name}
                     </span>
                     {isActive && <Sparkles size={11} style={{ color: '#818cf8' }} />}
@@ -188,14 +188,14 @@ export function ThemePanel() {
             {/* Font Preview Card */}
             <div style={{
               marginTop: 10, padding: '10px 12px', borderRadius: 8,
-              border: '1px solid rgba(255,255,255,0.08)',
-              backgroundColor: 'rgba(255,255,255,0.03)',
+              border: '1px solid var(--studio-border)',
+              backgroundColor: 'var(--studio-bg)',
             }}>
               <p style={{
                 fontFamily: `'${theme.fontFamily || 'Inter'}', sans-serif`,
                 fontSize: 16,
                 fontWeight: 700,
-                color: 'white',
+                color: 'var(--studio-text)',
                 margin: '0 0 2px 0',
               }}>
                 Aa Bb Cc 123
@@ -234,7 +234,7 @@ export function ThemePanel() {
                       <div style={{
                         width: 32, height: 32, borderRadius: 7,
                         backgroundColor: currentValue,
-                        border: '2px solid rgba(255,255,255,0.15)',
+                        border: '2px solid var(--studio-border)',
                         cursor: 'pointer',
                         boxShadow: `0 2px 8px ${currentValue}55`,
                         flexShrink: 0,
@@ -248,7 +248,7 @@ export function ThemePanel() {
                         flex: 1,
                         height: 32, padding: '0 10px',
                         borderRadius: 7, border: '1px solid var(--studio-border)',
-                        backgroundColor: 'rgba(255,255,255,0.04)',
+                        backgroundColor: 'var(--studio-bg)',
                         color: 'var(--studio-text)',
                         fontSize: 11, fontFamily: 'monospace',
                         outline: 'none',

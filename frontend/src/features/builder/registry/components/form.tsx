@@ -41,7 +41,10 @@ function FormComponent({ node }: RenderProps) {
     try {
       // Try posting to published backend endpoint if available
       const urlParams = new URLSearchParams(window.location.search);
-      const projectId = urlParams.get('projectId') || window.location.pathname.split('/projects/')[1]?.split('/')[0];
+      const pathParts = window.location.pathname.split('/');
+      const projectsIdx = pathParts.indexOf('projects');
+      const projectId = urlParams.get('projectId') 
+        || (projectsIdx !== -1 ? pathParts[projectsIdx + 1] : null);
 
       if (projectId) {
         await fetch(`/api/v1/published/forms/${node.id}/submit?projectId=${projectId}`, {

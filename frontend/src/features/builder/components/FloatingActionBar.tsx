@@ -125,9 +125,9 @@ export function FloatingActionBar() {
     gap: 0,
     height: 34,
     borderRadius: 10,
-    border: '1px solid rgba(99,102,241,0.3)',
-    backgroundColor: '#1a1a2e',
-    boxShadow: '0 4px 20px rgba(0,0,0,0.5), 0 0 0 1px rgba(99,102,241,0.15), inset 0 1px 0 rgba(255,255,255,0.05)',
+    border: '1px solid var(--studio-border-active)',
+    backgroundColor: 'var(--studio-panel)',
+    boxShadow: '0 4px 20px rgba(0,0,0,0.3), 0 0 0 1px rgba(99,102,241,0.1)',
     backdropFilter: 'blur(12px)',
     overflow: 'hidden',
     pointerEvents: 'all',
@@ -140,9 +140,9 @@ export function FloatingActionBar() {
     width: 32,
     height: 34,
     border: 'none',
-    borderLeft: '1px solid rgba(255,255,255,0.06)',
+    borderLeft: '1px solid var(--studio-border)',
     backgroundColor: 'transparent',
-    color: disabled ? 'rgba(113,113,122,0.4)' : (color || '#a1a1aa'),
+    color: disabled ? 'rgba(113,113,122,0.4)' : (color || 'var(--studio-text-muted)'),
     cursor: disabled ? 'not-allowed' : 'pointer',
     transition: 'background 0.12s ease, color 0.12s ease',
     flexShrink: 0,
@@ -161,7 +161,7 @@ export function FloatingActionBar() {
         gap: 6,
         padding: '0 10px',
         height: '100%',
-        borderRight: '1px solid rgba(255,255,255,0.06)',
+        borderRight: '1px solid var(--studio-border)',
         flexShrink: 0,
         maxWidth: 200,
       }}>
@@ -170,12 +170,12 @@ export function FloatingActionBar() {
           {breadcrumbs.map((crumb, i) => (
             <div key={i} style={{ display: 'flex', alignItems: 'center', gap: 4 }}>
               {i > 0 && (
-                <span style={{ color: '#3f3f46', fontSize: 10 }}>›</span>
+                <span style={{ color: 'var(--studio-text-subtle)', fontSize: 10 }}>›</span>
               )}
               <span style={{
                 fontSize: 11,
                 fontWeight: i === breadcrumbs.length - 1 ? 600 : 400,
-                color: i === breadcrumbs.length - 1 ? '#818cf8' : '#52525b',
+                color: i === breadcrumbs.length - 1 ? '#818cf8' : 'var(--studio-text-subtle)',
                 whiteSpace: 'nowrap',
                 overflow: 'hidden',
                 textOverflow: 'ellipsis',
@@ -194,7 +194,7 @@ export function FloatingActionBar() {
         onClick={handleMoveUp}
         disabled={!canMoveUp}
         title="Move up (Ctrl+↑)"
-        onMouseEnter={(e) => { if (canMoveUp) (e.currentTarget as HTMLButtonElement).style.backgroundColor = 'rgba(255,255,255,0.06)' }}
+        onMouseEnter={(e) => { if (canMoveUp) (e.currentTarget as HTMLButtonElement).style.backgroundColor = 'var(--studio-panel-hover)' }}
         onMouseLeave={(e) => { (e.currentTarget as HTMLButtonElement).style.backgroundColor = 'transparent' }}
       >
         <ChevronUp size={14} />
@@ -206,7 +206,7 @@ export function FloatingActionBar() {
         onClick={handleMoveDown}
         disabled={!canMoveDown}
         title="Move down (Ctrl+↓)"
-        onMouseEnter={(e) => { if (canMoveDown) (e.currentTarget as HTMLButtonElement).style.backgroundColor = 'rgba(255,255,255,0.06)' }}
+        onMouseEnter={(e) => { if (canMoveDown) (e.currentTarget as HTMLButtonElement).style.backgroundColor = 'var(--studio-panel-hover)' }}
         onMouseLeave={(e) => { (e.currentTarget as HTMLButtonElement).style.backgroundColor = 'transparent' }}
       >
         <ChevronDown size={14} />
@@ -239,7 +239,7 @@ export function FloatingActionBar() {
         style={btnStyle('#71717a')}
         onClick={handleDeselect}
         title="Deselect (Esc)"
-        onMouseEnter={(e) => { (e.currentTarget as HTMLButtonElement).style.backgroundColor = 'rgba(255,255,255,0.06)' }}
+        onMouseEnter={(e) => { (e.currentTarget as HTMLButtonElement).style.backgroundColor = 'var(--studio-panel-hover)' }}
         onMouseLeave={(e) => { (e.currentTarget as HTMLButtonElement).style.backgroundColor = 'transparent' }}
       >
         <X size={12} />

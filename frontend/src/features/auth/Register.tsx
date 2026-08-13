@@ -62,9 +62,9 @@ export function Register() {
     height: 42,
     padding: '0 14px',
     borderRadius: 9,
-    border: `1px solid ${hasError ? 'rgba(248,113,113,0.6)' : 'rgba(255,255,255,0.1)'}`,
-    backgroundColor: 'rgba(255,255,255,0.05)',
-    color: '#e4e4e7',
+    border: `1px solid ${hasError ? 'rgba(248,113,113,0.6)' : 'var(--border)'}`,
+    backgroundColor: 'var(--input)',
+    color: 'var(--foreground)',
     fontSize: 14,
     outline: 'none',
     fontFamily: 'inherit',
@@ -76,7 +76,7 @@ export function Register() {
     display: 'block',
     fontSize: 12,
     fontWeight: 500,
-    color: '#a1a1aa',
+    color: 'var(--muted-foreground)',
     marginBottom: 6,
   }
 
@@ -98,7 +98,7 @@ export function Register() {
   return (
     <div style={{
       minHeight: '100vh',
-      backgroundColor: '#09090b',
+      backgroundColor: 'var(--background)',
       display: 'flex',
       flexDirection: 'column',
       alignItems: 'center',
@@ -116,23 +116,23 @@ export function Register() {
         }}>
           <span style={{ color: 'white', fontWeight: 800, fontSize: 18 }}>B</span>
         </div>
-        <span style={{ fontSize: 20, fontWeight: 700, color: '#e4e4e7' }}>BuildStack</span>
+        <span style={{ fontSize: 20, fontWeight: 700, color: 'var(--foreground)' }}>BuildStack</span>
       </div>
 
       {/* Card */}
       <div style={{
         width: '100%', maxWidth: 440,
-        backgroundColor: '#111113',
-        border: '1px solid rgba(255,255,255,0.08)',
+        backgroundColor: 'var(--card)',
+        border: '1px solid var(--border)',
         borderRadius: 16,
         padding: '32px 32px 28px',
-        boxShadow: '0 20px 60px rgba(0,0,0,0.5)',
+        boxShadow: '0 20px 60px rgba(0,0,0,0.3)',
       }}>
         <div style={{ marginBottom: 24 }}>
-          <h1 style={{ fontSize: 22, fontWeight: 700, color: '#e4e4e7', margin: 0 }}>
+          <h1 style={{ fontSize: 22, fontWeight: 700, color: 'var(--foreground)', margin: 0 }}>
             Create your account
           </h1>
-          <p style={{ fontSize: 13, color: '#71717a', marginTop: 6 }}>
+          <p style={{ fontSize: 13, color: 'var(--muted-foreground)', marginTop: 6 }}>
             Start building beautiful websites for free
           </p>
         </div>

@@ -213,9 +213,22 @@ export function CanvasArea() {
             {activeRootId
               ? <RendererNode nodeId={activeRootId} />
               : (
-                <div className="p-8 text-center" style={{ color: '#9ca3af', paddingTop: 80 }}>
-                  <p style={{ fontSize: 14 }}>No content yet</p>
-                  <p style={{ fontSize: 12, marginTop: 4 }}>Add sections from the panel on the left</p>
+                <div style={{
+                  display: 'flex', flexDirection: 'column', alignItems: 'center',
+                  justifyContent: 'center', textAlign: 'center', padding: '80px 40px',
+                }}>
+                  <div style={{
+                    width: 52, height: 52, borderRadius: 13, marginBottom: 16,
+                    background: 'linear-gradient(135deg, rgba(99,102,241,0.2), rgba(139,92,246,0.2))',
+                    border: '1px solid rgba(99,102,241,0.3)',
+                    display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 22,
+                  }}>✦</div>
+                  <p style={{ fontSize: 14, fontWeight: 600, color: '#94a3b8', marginBottom: 6 }}>
+                    Canvas is ready
+                  </p>
+                  <p style={{ fontSize: 12, color: '#52525b', lineHeight: 1.7, maxWidth: 200 }}>
+                    Add a section from the <strong style={{ color: '#6366f1' }}>Sections</strong> panel on the left to get started
+                  </p>
                 </div>
               )
             }

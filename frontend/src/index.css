@@ -110,27 +110,39 @@ html.light, body.light, .light {
   --card-foreground: #0f172a;
   --popover: #ffffff;
   --popover-foreground: #0f172a;
+  --primary: #6366f1;
+  --primary-foreground: #ffffff;
   --secondary: #f1f5f9;
   --secondary-foreground: #0f172a;
   --muted: #f1f5f9;
   --muted-foreground: #64748b;
   --accent: #f1f5f9;
   --accent-foreground: #0f172a;
+  --destructive: #ef4444;
   --border: rgba(0, 0, 0, 0.1);
-  --input: rgba(0, 0, 0, 0.1);
+  --input: rgba(0, 0, 0, 0.08);
+  --ring: #6366f1;
+  --radius: 0.625rem;
   --sidebar: #ffffff;
   --sidebar-foreground: #0f172a;
+  --sidebar-primary: #6366f1;
+  --sidebar-primary-foreground: #ffffff;
   --sidebar-accent: #f1f5f9;
   --sidebar-accent-foreground: #0f172a;
   --sidebar-border: rgba(0, 0, 0, 0.1);
+  --sidebar-ring: #6366f1;
   --studio-bg: #f8fafc;
   --studio-panel: #ffffff;
   --studio-panel-hover: #f1f5f9;
   --studio-border: rgba(0, 0, 0, 0.1);
+  --studio-border-active: rgba(99, 102, 241, 0.5);
   --studio-text: #0f172a;
   --studio-text-muted: #64748b;
   --studio-text-subtle: #94a3b8;
+  --studio-icon-active: #6366f1;
   --studio-canvas-bg: #e2e8f0;
+  --studio-dot-color: rgba(99, 102, 241, 0.10);
+  --studio-selection: rgba(99, 102, 241, 0.12);
 }
 
 /* ─── Global Base Theme Engine ─── */

@@ -101,7 +101,27 @@ const router = createBrowserRouter([
   },
   {
     path: '*',
-    element: <div className="flex h-screen items-center justify-center">404 Not Found</div>,
+    element: (
+      <div style={{
+        minHeight: '100vh', display: 'flex', flexDirection: 'column',
+        alignItems: 'center', justifyContent: 'center', backgroundColor: '#09090b',
+        fontFamily: "'Inter', sans-serif", textAlign: 'center', padding: '24px',
+      }}>
+        <div style={{
+          width: 72, height: 72, borderRadius: 18, marginBottom: 24,
+          background: 'linear-gradient(135deg, #6366f1, #8b5cf6)',
+          display: 'flex', alignItems: 'center', justifyContent: 'center',
+          fontSize: 32, boxShadow: '0 8px 30px rgba(99,102,241,0.4)',
+        }}>🚫</div>
+        <h1 style={{ fontSize: 56, fontWeight: 800, color: '#e4e4e7', margin: '0 0 8px', letterSpacing: '-0.03em' }}>404</h1>
+        <p style={{ fontSize: 16, color: '#71717a', marginBottom: 28 }}>This page doesn't exist or was moved.</p>
+        <a href="/dashboard" style={{
+          padding: '10px 24px', backgroundColor: '#6366f1', color: 'white',
+          borderRadius: 8, textDecoration: 'none', fontWeight: 600, fontSize: 14,
+          boxShadow: '0 4px 14px rgba(99,102,241,0.4)',
+        }}>← Go to Dashboard</a>
+      </div>
+    ),
   }
 ])
 

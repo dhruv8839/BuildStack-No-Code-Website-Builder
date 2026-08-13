@@ -32,8 +32,8 @@ function DraggableComponentButton({ config, onClick }: { config: any; onClick: (
           gap: 6,
           padding: '10px 6px',
           borderRadius: 8,
-          border: '1px solid rgba(255,255,255,0.06)',
-          backgroundColor: 'rgba(255,255,255,0.03)',
+          border: '1px solid var(--studio-border)',
+          backgroundColor: 'var(--studio-bg)',
           cursor: 'grab',
           transition: 'all 0.15s ease',
           fontFamily: 'inherit',
@@ -45,8 +45,8 @@ function DraggableComponentButton({ config, onClick }: { config: any; onClick: (
         }}
         onMouseLeave={(e) => {
           const el = e.currentTarget as HTMLButtonElement
-          el.style.borderColor = 'rgba(255,255,255,0.06)'
-          el.style.backgroundColor = 'rgba(255,255,255,0.03)'
+          el.style.borderColor = 'var(--studio-border)'
+          el.style.backgroundColor = 'var(--studio-bg)'
         }}
       >
         <div style={{
@@ -57,7 +57,7 @@ function DraggableComponentButton({ config, onClick }: { config: any; onClick: (
         }}>
           <Icon size={15} style={{ color: '#818cf8' }} />
         </div>
-        <span style={{ fontSize: 10, fontWeight: 500, color: '#71717a', textAlign: 'center', lineHeight: 1.3 }}>
+        <span style={{ fontSize: 10, fontWeight: 500, color: 'var(--studio-text-muted)', textAlign: 'center', lineHeight: 1.3 }}>
           {config.name}
         </span>
       </button>
