@@ -147,14 +147,15 @@ export default function BuilderShell() {
     return () => window.removeEventListener('beforeunload', handleBeforeUnload);
   }, [builderState.isDirty]);
 
-  if (isProjectLoading) {
+  if (isProjectLoading || isPagesLoading) {
     return (
       <div className="flex h-screen w-screen items-center justify-center" style={{ backgroundColor: 'var(--studio-bg)' }}>
         <div className="flex flex-col items-center gap-3">
-          <div className="flex h-10 w-10 items-center justify-center rounded-xl" style={{ background: 'linear-gradient(135deg, #6366f1, #8b5cf6)' }}>
-            <span className="text-white font-bold text-lg">B</span>
+          <div className="flex h-12 w-12 items-center justify-center rounded-2xl" style={{ background: 'linear-gradient(135deg, #6366f1, #8b5cf6)', boxShadow: '0 8px 32px rgba(99,102,241,0.3)' }}>
+            <span className="text-white font-bold text-xl">B</span>
           </div>
-          <Loader2 className="h-5 w-5 animate-spin" style={{ color: 'var(--studio-text-muted)' }} />
+          <Loader2 className="h-6 w-6 animate-spin mt-2" style={{ color: '#6366f1' }} />
+          <p className="text-xs font-semibold" style={{ color: 'var(--studio-text-muted)' }}>Loading Studio Builder Workspace…</p>
         </div>
       </div>
     )
@@ -162,8 +163,20 @@ export default function BuilderShell() {
 
   if (projectError || !project) {
     return (
-      <div className="flex h-screen w-screen items-center justify-center" style={{ backgroundColor: 'var(--studio-bg)', color: '#f87171' }}>
-        Failed to load project workspace.
+      <div className="flex h-screen w-screen flex-col items-center justify-center gap-4" style={{ backgroundColor: 'var(--studio-bg)', color: 'var(--studio-text)' }}>
+        <div className="p-4 rounded-xl border border-red-500/30 bg-red-500/10 text-center max-w-md">
+          <p className="text-sm font-semibold text-red-400">Failed to load project workspace.</p>
+          <p className="text-xs text-[var(--studio-text-muted)] mt-1">The project may have been removed or backend API is unavailable.</p>
+        </div>
+        <button
+          onClick={() => window.location.href = '/projects'}
+          style={{
+            padding: '8px 16px', borderRadius: 8, backgroundColor: '#6366f1',
+            color: 'white', border: 'none', fontWeight: 600, fontSize: 13, cursor: 'pointer'
+          }}
+        >
+          Return to Projects
+        </button>
       </div>
     )
   }

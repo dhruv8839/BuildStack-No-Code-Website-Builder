@@ -103,7 +103,7 @@ export function TopToolbar({ project, activePageId }: TopToolbarProps) {
     >
       {/* ── Left: Logo & Back ── */}
       <div className="flex items-center gap-3" style={{ minWidth: 180 }}>
-        <Link to={`/workspaces/${project.workspaceId}/projects`}>
+        <Link to={project?.workspaceId ? `/workspaces/${project.workspaceId}/projects` : '/projects'}>
           <button
             style={{
               ...iconBtn(),
@@ -130,7 +130,7 @@ export function TopToolbar({ project, activePageId }: TopToolbarProps) {
           </div>
           <div>
             <p style={{ color: 'var(--studio-text)', fontSize: 13, fontWeight: 600, lineHeight: 1.2, maxWidth: 120, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
-              {project.name}
+              {project?.name || 'Untitled Project'}
             </p>
           </div>
         </div>
