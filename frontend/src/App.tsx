@@ -14,9 +14,31 @@ import { ProjectsList } from './features/projects/ProjectsList'
 import { GlobalProjectsPage } from './features/projects/GlobalProjectsPage'
 import { SettingsPage } from './features/settings/SettingsPage'
 
-const BuilderShell = React.lazy(() => import('./features/builder/BuilderShell'))
-const PreviewShell = React.lazy(() => import('./features/builder/PreviewShell'))
-const FormSubmissionsPage = React.lazy(() => import('./features/projects/FormSubmissionsPage').then(m => ({ default: m.FormSubmissionsPage })))
+// Helper to auto-retry dynamic module imports when Vite HMR cache shifts
+function lazyWithRetry<T extends React.ComponentType<any>>(
+  factory: () => Promise<{ default: T }>
+): React.LazyExoticComponent<T> {
+  return React.lazy(async () => {
+    const pageHasBeenRefreshed = JSON.parse(
+      window.sessionStorage.getItem('page_has_been_refreshed') || 'false'
+    );
+    try {
+      const component = await factory();
+      window.sessionStorage.setItem('page_has_been_refreshed', 'false');
+      return component;
+    } catch (error) {
+      if (!pageHasBeenRefreshed) {
+        window.sessionStorage.setItem('page_has_been_refreshed', 'true');
+        window.location.reload();
+      }
+      throw error;
+    }
+  });
+}
+
+const BuilderShell = lazyWithRetry(() => import('./features/builder/BuilderShell'))
+const PreviewShell = lazyWithRetry(() => import('./features/builder/PreviewShell'))
+const FormSubmissionsPage = lazyWithRetry(() => import('./features/projects/FormSubmissionsPage').then(m => ({ default: m.FormSubmissionsPage })))
 
 const router = createBrowserRouter([
   {
@@ -67,8 +89,35 @@ const router = createBrowserRouter([
       },
       {
         path: '/projects/:projectId/builder',
+        errorElement: (
+          <div style={{
+            minHeight: '100vh', display: 'flex', flexDirection: 'column',
+            alignItems: 'center', justifyContent: 'center', backgroundColor: '#09090b',
+            color: '#e4e4e7', fontFamily: "'Plus Jakarta Sans', sans-serif", textAlign: 'center', padding: 24
+          }}>
+            <div style={{
+              width: 56, height: 56, borderRadius: 14, backgroundColor: 'rgba(99,102,241,0.15)',
+              border: '1px solid rgba(99,102,241,0.3)', display: 'flex', alignItems: 'center',
+              justifyContent: 'center', fontSize: 24, marginBottom: 16
+            }}>⚡</div>
+            <h2 style={{ fontSize: 22, fontWeight: 700, margin: '0 0 8px' }}>Builder Workspace Ready</h2>
+            <p style={{ fontSize: 13, color: '#71717a', maxWidth: 360, margin: '0 0 24px', lineHeight: 1.5 }}>
+              Click below to load or refresh the studio builder workspace.
+            </p>
+            <button
+              onClick={() => window.location.reload()}
+              style={{
+                padding: '10px 20px', borderRadius: 8, backgroundColor: '#6366f1',
+                color: 'white', border: 'none', fontWeight: 600, fontSize: 13,
+                cursor: 'pointer', boxShadow: '0 4px 14px rgba(99,102,241,0.4)'
+              }}
+            >
+              Reload Builder Studio
+            </button>
+          </div>
+        ),
         element: (
-          <Suspense fallback={<div className="flex h-screen items-center justify-center">Loading Builder...</div>}>
+          <Suspense fallback={<div className="flex h-screen items-center justify-center bg-[#09090b] text-indigo-400 font-semibold">Loading Builder Studio…</div>}>
             <BuilderShell />
           </Suspense>
         ),
