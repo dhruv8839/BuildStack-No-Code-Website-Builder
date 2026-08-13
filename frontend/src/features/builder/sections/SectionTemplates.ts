@@ -1134,7 +1134,7 @@ function buildLightMinimalFooter() {
 
 // ─── EXPORTED TEMPLATE REGISTRY ─────────────────────────────────────────────
 
-export const SECTION_TEMPLATES: SectionTemplate[] = [
+const RAW_SECTION_TEMPLATES: SectionTemplate[] = [
   {
     id: 'navbar',
     name: 'Navbar (Light Minimal)',
