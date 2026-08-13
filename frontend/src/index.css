@@ -1,8 +1,8 @@
 @import "tailwindcss";
 
 @theme inline {
-  --font-heading: var(--font-sans);
-  --font-sans: 'Geist Variable', sans-serif;
+  --font-heading: 'Plus Jakarta Sans', sans-serif;
+  --font-sans: 'Plus Jakarta Sans', 'Inter', sans-serif;
   --color-sidebar-ring: var(--sidebar-ring);
   --color-sidebar-border: var(--sidebar-border);
   --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
@@ -151,9 +151,24 @@ html.light, body.light, .light {
     border-color: var(--border);
   }
   html, body {
+    font-family: 'Plus Jakarta Sans', 'Inter', system-ui, -apple-system, sans-serif !important;
     background-color: var(--background) !important;
     color: var(--foreground) !important;
     transition: background-color 0.2s ease, color 0.2s ease;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
+    font-feature-settings: 'cv02', 'cv03', 'cv04', 'cv11';
+    letter-spacing: -0.011em;
+  }
+  h1, h2, h3, h4, h5, h6 {
+    font-family: 'Plus Jakarta Sans', 'Outfit', sans-serif;
+    letter-spacing: -0.025em;
+    font-weight: 700;
+    line-height: 1.25;
+  }
+  button, input, select, textarea {
+    font-family: 'Plus Jakarta Sans', 'Inter', sans-serif;
   }
 }
 
