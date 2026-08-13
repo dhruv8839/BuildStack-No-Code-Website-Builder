@@ -26,11 +26,11 @@ export interface ResolvedStyleResult {
  *
  * Memoized to avoid re-computation on unrelated renders.
  */
-export function useResolvedStyle(node: BuilderNode, viewport: Viewport): ResolvedStyleResult {
+export function useResolvedStyle(node: BuilderNode | null | undefined, viewport: Viewport): ResolvedStyleResult {
   return useMemo(() => {
-    const desktopStyle = node.style.desktop ?? {};
-    const tabletStyle = node.style.tablet ?? {};
-    const mobileStyle = node.style.mobile ?? {};
+    const desktopStyle = node?.style?.desktop ?? {};
+    const tabletStyle = node?.style?.tablet ?? {};
+    const mobileStyle = node?.style?.mobile ?? {};
 
     let resolved: Record<string, any>;
     let localOverrides: Record<string, any>;
@@ -60,7 +60,6 @@ export function useResolvedStyle(node: BuilderNode, viewport: Viewport): Resolve
       if (viewport === 'desktop') return undefined;
       if (property in localOverrides) return undefined;
       if (viewport === 'mobile') {
-        // Check tablet first, then desktop
         if (property in tabletStyle) return tabletStyle[property];
         if (property in desktopStyle) return desktopStyle[property];
       }
@@ -70,7 +69,7 @@ export function useResolvedStyle(node: BuilderNode, viewport: Viewport): Resolve
       return undefined;
     };
 
-    // Helper: Expand 'align' property (left | center | right | stretch) into CSS styles
+    // Helper: Expand 'align' property into CSS styles
     if (resolved.align) {
       const a = resolved.align;
       if (a === 'center') {
@@ -97,5 +96,5 @@ export function useResolvedStyle(node: BuilderNode, viewport: Viewport): Resolve
     }
 
     return { resolved, isInherited, getInheritedValue };
-  }, [node.style, viewport]);
+  }, [node?.style, viewport]);
 }

@@ -34,10 +34,19 @@ export default function BuilderShell() {
   const { projectId } = useParams<{ projectId: string }>()
   
   const { data: project, isLoading: isProjectLoading, error: projectError } = useGetProjectQuery(projectId!)
+  const { data: projectPages } = useGetPagesForProjectQuery(projectId!, { skip: !projectId })
 
   const [activePanel, setActivePanel] = React.useState<PanelType>('sections')
   const [activePageId, setActivePageId] = React.useState<string | null>(null)
   const [isCommandPaletteOpen, setIsCommandPaletteOpen] = React.useState(false)
+
+  // Auto-select home page / first page on initial project load
+  React.useEffect(() => {
+    if (!activePageId && projectPages && projectPages.length > 0) {
+      const homePage = projectPages.find((p) => p.isHomePage) || projectPages[0];
+      setActivePageId(homePage.id);
+    }
+  }, [projectPages, activePageId]);
 
   // Ctrl+K / Cmd+K listener
   React.useEffect(() => {
