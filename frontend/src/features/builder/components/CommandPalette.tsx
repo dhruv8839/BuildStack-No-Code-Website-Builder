@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useMemo } from 'react';
+import { useState, useEffect, useMemo } from 'react';
 import { useDispatch } from 'react-redux';
 import { ComponentRegistry } from '../registry';
 import { SECTION_TEMPLATES } from '../sections/SectionTemplates';

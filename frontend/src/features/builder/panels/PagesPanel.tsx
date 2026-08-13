@@ -6,7 +6,6 @@ import {
   useCreatePageMutation,
   useDeletePageMutation,
 } from '../../projects/pagesApiSlice'
-import { Button } from '../../../components/ui/button'
 import { Plus, Trash2, Home, File as FileIcon, Settings } from 'lucide-react'
 import { PageSeoModal } from './PageSeoModal'
 import type { PageResponse } from '../../../types/api'

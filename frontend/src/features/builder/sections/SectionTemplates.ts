@@ -916,6 +916,102 @@ function buildTrustBadgesSection() {
   return { sectionRootId: root, nodes };
 }
 
+function buildProductGridSection() {
+  const root = generateNodeId();
+  const headerContainer = generateNodeId();
+  const headline = generateNodeId();
+  const desc = generateNodeId();
+  const grid = generateNodeId();
+  
+  const products = [
+    { title: 'Premium Wireless Headphones', price: '$299', badge: 'Best Seller', img: 'https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=500&auto=format&fit=crop&q=80' },
+    { title: 'Minimalist Smartwatch', price: '$199', badge: 'New', img: 'https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=500&auto=format&fit=crop&q=80' },
+    { title: 'Ergonomic Keyboard', price: '$149', badge: 'Sale', img: 'https://images.unsplash.com/photo-1595225476474-87563907a212?w=500&auto=format&fit=crop&q=80' },
+    { title: 'Noise Cancelling Earbuds', price: '$129', badge: '', img: 'https://images.unsplash.com/photo-1590658268037-6bf12165a8df?w=500&auto=format&fit=crop&q=80' }
+  ];
+
+  const nodes: Record<string, BuilderNode> = {
+    [root]: node('container', root, null, [headerContainer, grid], {},
+      { display: 'flex', flexDirection: 'column', backgroundColor: '#F8FAFC', paddingTop: '80px', paddingBottom: '80px', paddingLeft: '40px', paddingRight: '40px', width: '100%', alignItems: 'center' },
+      { paddingLeft: '20px', paddingRight: '20px', paddingTop: '48px', paddingBottom: '48px' }
+    ),
+    [headerContainer]: node('container', headerContainer, root, [headline, desc], {},
+      { display: 'flex', flexDirection: 'column', alignItems: 'center', marginBottom: '48px', textAlign: 'center', width: '100%', maxWidth: '800px', backgroundColor: 'transparent', border: 'none' }
+    ),
+    [headline]: node('heading', headline, headerContainer, [],
+      { text: 'Featured Products' },
+      { fontSize: '36px', fontWeight: '800', color: '#0F172A', marginBottom: '16px' },
+      { fontSize: '28px' }
+    ),
+    [desc]: node('paragraph', desc, headerContainer, [],
+      { text: 'Discover our most popular items selected just for you.' },
+      { fontSize: '16px', color: '#64748B', maxWidth: '600px', marginBottom: '0' }
+    ),
+    [grid]: node('container', grid, root, [], {},
+      { display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: '24px', width: '100%', maxWidth: '1200px', backgroundColor: 'transparent', border: 'none' },
+      { gridTemplateColumns: '1fr' }
+    )
+  };
+
+  const gridChildren: string[] = [];
+
+  products.forEach(p => {
+    const card = generateNodeId();
+    const imgCont = generateNodeId();
+    const imgNode = generateNodeId();
+    const badgeNode = generateNodeId();
+    const content = generateNodeId();
+    const title = generateNodeId();
+    const price = generateNodeId();
+    const btn = generateNodeId();
+
+    gridChildren.push(card);
+
+    nodes[card] = node('container', card, grid, [imgCont, content], {},
+      { display: 'flex', flexDirection: 'column', backgroundColor: '#ffffff', borderRadius: '16px', overflow: 'hidden', boxShadow: '0 4px 20px rgba(0,0,0,0.05)', transition: 'transform 0.2s', minWidth: '0' }
+    );
+    
+    nodes[imgCont] = node('container', imgCont, card, p.badge ? [imgNode, badgeNode] : [imgNode], {},
+      { position: 'relative', width: '100%', height: '240px', backgroundColor: '#f1f5f9', border: 'none', display: 'flex' }
+    );
+    
+    nodes[imgNode] = node('image', imgNode, imgCont, [],
+      { src: p.img, alt: p.title },
+      { width: '100%', height: '100%', objectFit: 'cover' }
+    );
+
+    if (p.badge) {
+      nodes[badgeNode] = node('paragraph', badgeNode, imgCont, [],
+        { text: p.badge },
+        { position: 'absolute', top: '12px', right: '12px', fontSize: '11px', fontWeight: '700', color: '#ffffff', backgroundColor: '#3b82f6', paddingTop: '4px', paddingBottom: '4px', paddingLeft: '10px', paddingRight: '10px', borderRadius: '999px', textTransform: 'uppercase', letterSpacing: '0.05em', margin: '0' }
+      );
+    }
+
+    nodes[content] = node('container', content, card, [title, price, btn], {},
+      { display: 'flex', flexDirection: 'column', padding: '24px', backgroundColor: 'transparent', border: 'none', flex: '1' }
+    );
+
+    nodes[title] = node('heading', title, content, [],
+      { text: p.title },
+      { fontSize: '18px', fontWeight: '700', color: '#0f172a', marginBottom: '8px' }
+    );
+
+    nodes[price] = node('paragraph', price, content, [],
+      { text: p.price },
+      { fontSize: '18px', fontWeight: '600', color: '#3b82f6', marginBottom: '20px' }
+    );
+
+    nodes[btn] = node('button', btn, content, [],
+      { text: 'Add to Cart' },
+      { width: '100%', backgroundColor: '#0f172a', color: '#ffffff', padding: '12px', borderRadius: '8px', fontSize: '14px', fontWeight: '600', border: 'none', cursor: 'pointer', textAlign: 'center', marginTop: 'auto' }
+    );
+  });
+
+  nodes[grid].children = gridChildren;
+
+  return { sectionRootId: root, nodes };
+}
+
 function buildBlogGridSection() {
   const root = generateNodeId();
   const header = generateNodeId();
@@ -1248,6 +1344,38 @@ const RAW_SECTION_TEMPLATES: SectionTemplate[] = [
     category: 'content',
     thumbnail: '❓',
     build: buildFaqSection,
+  },
+  {
+    id: 'team',
+    name: 'Team Members (3-Col)',
+    description: 'Meet our leadership team with headshots, roles, and bio text',
+    category: 'content',
+    thumbnail: '👥',
+    build: buildTeamSection,
+  },
+  {
+    id: 'newsletter',
+    name: 'Newsletter Signup',
+    description: 'Catchy headline with email input box and subscribe button',
+    category: 'content',
+    thumbnail: '📬',
+    build: buildNewsletterSection,
+  },
+  {
+    id: 'portfolio-gallery',
+    name: 'Portfolio Showcase Gallery',
+    description: 'Visual grid of project showcase cards with hover highlights',
+    category: 'content',
+    thumbnail: '🖼️',
+    build: buildPortfolioGallerySection,
+  },
+  {
+    id: 'trust-badges',
+    name: 'Trust Badges & Logos',
+    description: 'Partner / Client logos strip with trust metrics',
+    category: 'content',
+    thumbnail: '🛡️',
+    build: buildTrustBadgesSection,
   },
   // ── E-Commerce ──
   {
