@@ -24,6 +24,9 @@ import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
+import com.buildstack.project.entity.Page;
+import com.buildstack.project.repository.PageRepository;
+
 @Service
 @RequiredArgsConstructor
 public class ProjectServiceImpl implements ProjectService {
@@ -31,6 +34,7 @@ public class ProjectServiceImpl implements ProjectService {
     private final ProjectRepository projectRepository;
     private final WorkspaceRepository workspaceRepository;
     private final OrganizationMemberRepository memberRepository;
+    private final PageRepository pageRepository;
     private final ProjectMapper projectMapper;
     private final CurrentUserService currentUserService;
 
@@ -52,6 +56,16 @@ public class ProjectServiceImpl implements ProjectService {
         project.setSlug(slug);
 
         Project savedProject = projectRepository.save(project);
+
+        // Auto-create default Home page for newly created project
+        Page defaultHomePage = Page.builder()
+                .project(savedProject)
+                .name("Home")
+                .slug("index")
+                .isHomePage(true)
+                .build();
+        pageRepository.save(defaultHomePage);
+
         return projectMapper.toResponse(savedProject);
     }
 
@@ -119,6 +133,20 @@ public class ProjectServiceImpl implements ProjectService {
                 .build();
 
         Project saved = projectRepository.save(clonedProject);
+
+        // Clone all pages from source project to duplicate project
+        List<Page> sourcePages = pageRepository.findAllByProjectId(sourceProject.getId());
+        for (Page p : sourcePages) {
+            Page clonedPage = Page.builder()
+                    .project(saved)
+                    .name(p.getName())
+                    .slug(p.getSlug())
+                    .isHomePage(p.isHomePage())
+                    .builderData(p.getBuilderData())
+                    .build();
+            pageRepository.save(clonedPage);
+        }
+
         return projectMapper.toResponse(saved);
     }
 

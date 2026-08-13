@@ -34,19 +34,28 @@ export default function BuilderShell() {
   const { projectId } = useParams<{ projectId: string }>()
   
   const { data: project, isLoading: isProjectLoading, error: projectError } = useGetProjectQuery(projectId!)
-  const { data: projectPages } = useGetPagesForProjectQuery(projectId!, { skip: !projectId })
+  const { data: projectPages, isLoading: isPagesLoading } = useGetPagesForProjectQuery(projectId!, { skip: !projectId })
+  const [createPage] = useCreatePageMutation()
 
   const [activePanel, setActivePanel] = React.useState<PanelType>('sections')
   const [activePageId, setActivePageId] = React.useState<string | null>(null)
   const [isCommandPaletteOpen, setIsCommandPaletteOpen] = React.useState(false)
 
-  // Auto-select home page / first page on initial project load
+  // Auto-select home page / first page on initial project load, or create Home page if project has 0 pages
   React.useEffect(() => {
-    if (!activePageId && projectPages && projectPages.length > 0) {
-      const homePage = projectPages.find((p) => p.isHomePage) || projectPages[0];
-      setActivePageId(homePage.id);
+    if (!activePageId && !isPagesLoading && projectPages) {
+      if (projectPages.length > 0) {
+        const homePage = projectPages.find((p) => p.isHomePage) || projectPages[0];
+        setActivePageId(homePage.id);
+      } else if (projectId) {
+        // Auto-create Home page for empty projects
+        createPage({ projectId, name: 'Home', slug: 'index', isHomePage: true })
+          .unwrap()
+          .then((newPage) => setActivePageId(newPage.id))
+          .catch((err) => console.error('Auto-create page failed', err));
+      }
     }
-  }, [projectPages, activePageId]);
+  }, [projectPages, isPagesLoading, activePageId, projectId, createPage]);
 
   // Ctrl+K / Cmd+K listener
   React.useEffect(() => {
@@ -214,7 +223,12 @@ export default function BuilderShell() {
           
           {/* Main Canvas Area */}
           <div className="relative overflow-hidden" style={{ backgroundColor: 'var(--studio-canvas-bg)' }}>
-            {!activePageId ? (
+            {isPagesLoading || isStateLoading || (!activePageId && (!projectPages || projectPages.length === 0)) ? (
+              <div className="flex h-full items-center justify-center flex-col gap-3">
+                <Loader2 className="h-7 w-7 animate-spin" style={{ color: '#6366f1' }} />
+                <p className="text-xs font-semibold" style={{ color: 'var(--studio-text-muted)' }}>Initializing Builder Canvas…</p>
+              </div>
+            ) : !activePageId ? (
               <div className="flex h-full items-center justify-center flex-col gap-4">
                 <div
                   className="rounded-2xl flex items-center justify-center"
@@ -226,10 +240,6 @@ export default function BuilderShell() {
                   <p className="text-sm font-medium" style={{ color: 'var(--studio-text)' }}>Select a page to start building</p>
                   <p className="text-xs mt-1" style={{ color: 'var(--studio-text-muted)' }}>Choose a page from the Pages panel on the left</p>
                 </div>
-              </div>
-            ) : isStateLoading ? (
-              <div className="flex h-full items-center justify-center">
-                <Loader2 className="h-6 w-6 animate-spin" style={{ color: '#6366f1' }} />
               </div>
             ) : (
               <>
