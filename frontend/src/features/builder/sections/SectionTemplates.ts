@@ -1247,6 +1247,8 @@ export const SECTION_TEMPLATES: SectionTemplate[] = [
     description: 'Frequently asked questions in a clean accordion-style list',
     category: 'content',
     thumbnail: '❓',
+    build: buildFaqSection,
+  },
   // ── E-Commerce ──
   {
     id: 'product-hero',

@@ -175,7 +175,7 @@ export function DashboardIndex() {
       </div>
 
       {/* Activity & Stats Bar */}
-      <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
+      <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
         <div className="rounded-xl border border-[var(--border)] bg-[var(--card)] p-4 space-y-1">
           <div className="flex items-center gap-2 text-[var(--muted-foreground)]">
             <Globe className="h-4 w-4 text-[var(--primary)]" />
@@ -198,16 +198,6 @@ export function DashboardIndex() {
             <span className="text-xs font-semibold uppercase tracking-wider">Organizations</span>
           </div>
           <p className="text-2xl font-extrabold text-[var(--foreground)]">{organizations.length}</p>
-        </div>
-
-        <div className="rounded-xl border border-[var(--border)] bg-[var(--card)] p-4 space-y-1">
-          <div className="flex items-center gap-2 text-[var(--muted-foreground)]">
-            <Sparkles className="h-4 w-4 text-amber-400" />
-            <span className="text-xs font-semibold uppercase tracking-wider">AI Engine</span>
-          </div>
-          <p className="text-sm font-bold text-[var(--foreground)] truncate mt-1">
-            {localStorage.getItem('buildstack_gemini_key') ? 'Custom Gemini Key' : 'Smart Synthesizer'}
-          </p>
         </div>
       </div>
 
