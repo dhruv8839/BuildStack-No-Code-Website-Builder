@@ -45,6 +45,7 @@ export const RendererNode = memo(({ nodeId }: RendererNodeProps) => {
       type: 'existing_component',
       nodeId: nodeId,
       componentType: node?.type,
+      isContainer: node ? ComponentRegistry.getConfig(node.type)?.isContainer ?? false : false,
     },
     disabled: isRoot || isEditing // Disable DnD while editing text
   });

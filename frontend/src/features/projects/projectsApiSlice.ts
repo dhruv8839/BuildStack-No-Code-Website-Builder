@@ -21,6 +21,15 @@ export const projectsApiSlice = apiSlice.injectEndpoints({
         { type: 'Project', id: `LIST-${workspaceId}` },
       ],
     }),
+    duplicateProject: builder.mutation<ProjectResponse, { projectId: string; workspaceId: string }>({
+      query: ({ projectId }) => ({
+        url: `/v1/projects/${projectId}/duplicate`,
+        method: 'POST',
+      }),
+      invalidatesTags: (_result, _error, { workspaceId }) => [
+        { type: 'Project', id: `LIST-${workspaceId}` },
+      ],
+    }),
     deleteProject: builder.mutation<void, { projectId: string; workspaceId: string }>({
       query: ({ projectId }) => ({
         url: `/v1/projects/${projectId}`,
@@ -37,5 +46,6 @@ export const {
   useGetProjectsForWorkspaceQuery,
   useGetProjectQuery,
   useCreateProjectMutation,
+  useDuplicateProjectMutation,
   useDeleteProjectMutation,
 } = projectsApiSlice

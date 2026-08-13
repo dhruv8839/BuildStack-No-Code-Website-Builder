@@ -36,6 +36,7 @@ export type Viewport = 'desktop' | 'tablet' | 'mobile';
 export interface HistorySnapshot {
   nodes: Record<string, BuilderNode>;
   rootNodeId: string | null;
+  theme?: ThemeState;
 }
 
 export interface ThemeState {
@@ -99,7 +100,8 @@ const initialState: BuilderState = {
 function recordSnapshot(state: BuilderState) {
   state.past.push(JSON.parse(JSON.stringify({
     nodes: state.nodes,
-    rootNodeId: state.rootNodeId
+    rootNodeId: state.rootNodeId,
+    theme: state.theme,
   })));
   if (state.past.length > 50) {
     state.past.shift();
@@ -163,11 +165,15 @@ export const builderSlice = createSlice({
       const previous = state.past.pop()!;
       state.future.unshift(JSON.parse(JSON.stringify({
         nodes: state.nodes,
-        rootNodeId: state.rootNodeId
+        rootNodeId: state.rootNodeId,
+        theme: state.theme,
       })));
       
       state.nodes = previous.nodes;
       state.rootNodeId = previous.rootNodeId;
+      if (previous.theme) {
+        state.theme = previous.theme;
+      }
       
       if (state.selectedNodeId && !state.nodes[state.selectedNodeId]) {
         state.selectedNodeId = null;
@@ -180,11 +186,15 @@ export const builderSlice = createSlice({
       const next = state.future.shift()!;
       state.past.push(JSON.parse(JSON.stringify({
         nodes: state.nodes,
-        rootNodeId: state.rootNodeId
+        rootNodeId: state.rootNodeId,
+        theme: state.theme,
       })));
       
       state.nodes = next.nodes;
       state.rootNodeId = next.rootNodeId;
+      if (next.theme) {
+        state.theme = next.theme;
+      }
       
       if (state.selectedNodeId && !state.nodes[state.selectedNodeId]) {
         state.selectedNodeId = null;

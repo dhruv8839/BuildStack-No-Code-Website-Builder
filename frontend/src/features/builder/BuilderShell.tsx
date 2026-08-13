@@ -28,6 +28,8 @@ import { useKeyboardShortcuts } from './hooks/useKeyboardShortcuts'
 
 import { createStarterSiteTemplate } from './sections/SectionTemplates'
 
+import { CommandPalette } from './components/CommandPalette'
+
 export default function BuilderShell() {
   const { projectId } = useParams<{ projectId: string }>()
   
@@ -35,6 +37,19 @@ export default function BuilderShell() {
 
   const [activePanel, setActivePanel] = React.useState<PanelType>('sections')
   const [activePageId, setActivePageId] = React.useState<string | null>(null)
+  const [isCommandPaletteOpen, setIsCommandPaletteOpen] = React.useState(false)
+
+  // Ctrl+K / Cmd+K listener
+  React.useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 'k') {
+        e.preventDefault()
+        setIsCommandPaletteOpen((prev) => !prev)
+      }
+    }
+    window.addEventListener('keydown', handleKeyDown)
+    return () => window.removeEventListener('keydown', handleKeyDown)
+  }, [])
 
   const dispatch = useDispatch()
   const builderState = useSelector((state: RootState) => state.builder)
@@ -101,6 +116,18 @@ export default function BuilderShell() {
 
     return () => clearTimeout(timer)
   }, [builderState.isDirty, activePageId, dispatch, saveBuilderState])
+
+  // Warn before closing tab if there are unsaved edits
+  React.useEffect(() => {
+    const handleBeforeUnload = (e: BeforeUnloadEvent) => {
+      if (builderState.isDirty) {
+        e.preventDefault();
+        e.returnValue = '';
+      }
+    };
+    window.addEventListener('beforeunload', handleBeforeUnload);
+    return () => window.removeEventListener('beforeunload', handleBeforeUnload);
+  }, [builderState.isDirty]);
 
   if (isProjectLoading) {
     return (
@@ -218,7 +245,11 @@ export default function BuilderShell() {
       <div style={{ borderTop: '1px solid var(--studio-border)', backgroundColor: 'var(--studio-bg)' }}>
         <BottomStatusBar />
       </div>
-      
+
+      <CommandPalette
+        isOpen={isCommandPaletteOpen}
+        onClose={() => setIsCommandPaletteOpen(false)}
+      />
     </div>
   )
 }

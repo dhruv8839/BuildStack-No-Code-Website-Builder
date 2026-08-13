@@ -78,11 +78,23 @@ function OrgWorkspacesFetcher({
   );
 }
 
+import { useDuplicateProjectMutation } from './projectsApiSlice';
+import { Copy } from 'lucide-react';
+
 export function GlobalProjectsPage() {
   const [searchTerm, setSearchTerm] = useState('');
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [allProjectsMap, setAllProjectsMap] = useState<Record<string, EnrichedProject[]>>({});
   const [allWorkspacesMap, setAllWorkspacesMap] = useState<Record<string, EnrichedWorkspace>>({});
+  const [duplicateProject, { isLoading: isDuplicating }] = useDuplicateProjectMutation();
+
+  const handleDuplicateProject = async (projectId: string, workspaceId: string) => {
+    try {
+      await duplicateProject({ projectId, workspaceId }).unwrap();
+    } catch (err) {
+      console.error('Failed to duplicate project', err);
+    }
+  };
 
   const { data: organizations = [], isLoading: isOrgsLoading } = useGetMyOrganizationsQuery();
 
@@ -242,12 +254,25 @@ export function GlobalProjectsPage() {
                     <Clock className="h-3 w-3" />
                     {project.updatedAt ? new Date(project.updatedAt).toLocaleDateString() : 'Recently'}
                   </span>
-                  <Link to={`/projects/${project.id}/builder`}>
-                    <Button size="sm" className="h-8 gap-1.5 text-xs shadow-none">
-                      Open Builder
-                      <ExternalLink className="h-3 w-3" />
+                  <div className="flex items-center gap-1.5">
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      className="h-8 gap-1 text-xs border-border"
+                      onClick={() => handleDuplicateProject(project.id, project.workspaceId)}
+                      title="Duplicate Project"
+                      disabled={isDuplicating}
+                    >
+                      <Copy className="h-3 w-3" />
+                      Clone
                     </Button>
-                  </Link>
+                    <Link to={`/projects/${project.id}/builder`}>
+                      <Button size="sm" className="h-8 gap-1.5 text-xs shadow-none" style={{ backgroundColor: 'var(--primary)', color: 'white' }}>
+                        Open Builder
+                        <ExternalLink className="h-3 w-3" />
+                      </Button>
+                    </Link>
+                  </div>
                 </div>
               </CardContent>
             </Card>

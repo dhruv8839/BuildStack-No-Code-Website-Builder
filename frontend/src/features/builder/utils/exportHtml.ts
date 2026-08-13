@@ -144,7 +144,7 @@ function renderNodeToHtml(nodeId: string, nodes: Record<string, BuilderNode>): s
 
 // ─── CSS Generator ───────────────────────────────────────────────────────────
 
-function generateStylesCss(theme?: ThemeState): string {
+function generateStylesCss(theme?: ThemeState, nodes?: Record<string, BuilderNode>): string {
   const fontName = theme?.fontFamily || 'Inter';
   const fontUrl = `https://fonts.googleapis.com/css2?family=${encodeURIComponent(fontName)}:wght@400;500;600;700;800&display=swap`;
 
@@ -220,11 +220,31 @@ img, video, iframe { max-width: 100%; height: auto; display: block; }
 @keyframes bsFloatGlow { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-8px); } }
 @keyframes bsBounceIn { 0% { opacity: 0; transform: scale(0.3); } 50% { opacity: 1; transform: scale(1.05); } 70% { transform: scale(0.9); } 100% { transform: scale(1); } }
 
-/* ── Responsive ── */
-@media (max-width: 768px) {
-  body { font-size: 15px; }
-}
+/* ── Responsive Media Queries ── */
+${generateResponsiveMediaQueries(nodes)}
 `;
+}
+
+function generateResponsiveMediaQueries(nodes?: Record<string, BuilderNode>): string {
+  if (!nodes) return `@media (max-width: 768px) { body { font-size: 15px; } }`;
+
+  const tabletCss: string[] = [];
+  const mobileCss: string[] = [];
+
+  Object.values(nodes).forEach((n) => {
+    if (n.style?.tablet && Object.keys(n.style.tablet).length > 0) {
+      const css = styleObjectToCss(n.style.tablet);
+      if (css) tabletCss.push(`  #${n.id} { ${css} }`);
+    }
+    if (n.style?.mobile && Object.keys(n.style.mobile).length > 0) {
+      const css = styleObjectToCss(n.style.mobile);
+      if (css) mobileCss.push(`  #${n.id} { ${css} }`);
+    }
+  });
+
+  let output = `@media (max-width: 768px) {\n  body { font-size: 15px; }\n${tabletCss.join('\n')}\n}\n`;
+  output += `@media (max-width: 480px) {\n${mobileCss.join('\n')}\n}`;
+  return output;
 }
 
 // ─── JS Generator ────────────────────────────────────────────────────────────
@@ -436,7 +456,7 @@ ${bodyContent}
 </html>`;
 
   folder.file('index.html', indexHtml);
-  folder.file('styles.css', generateStylesCss(theme));
+  folder.file('styles.css', generateStylesCss(theme, nodes));
   folder.file('script.js', generateScriptJs());
 
   // assets/ readme

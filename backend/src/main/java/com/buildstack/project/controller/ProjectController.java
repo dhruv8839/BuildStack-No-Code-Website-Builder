@@ -42,6 +42,11 @@ public class ProjectController {
         return ResponseEntity.ok(projectService.updateProject(id, request));
     }
 
+    @PostMapping("/{id}/duplicate")
+    public ResponseEntity<ProjectResponse> duplicateProject(@PathVariable UUID id) {
+        return ResponseEntity.status(HttpStatus.CREATED).body(projectService.duplicateProject(id));
+    }
+
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteProject(@PathVariable UUID id) {
         projectService.deleteProject(id);

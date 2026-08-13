@@ -18,13 +18,17 @@ const CATEGORY_TABS: { id: CategoryId; label: string; emoji: string }[] = [
   { id: 'footer',     label: 'Footer',      emoji: '🦶' },
 ];
 
+import { useSelector } from 'react-redux';
+import type { RootState } from '../../../app/store';
+
 export function SectionsPanel() {
   const dispatch = useDispatch();
+  const theme = useSelector((state: RootState) => state.builder.theme);
   const [activeCategory, setActiveCategory] = useState<CategoryId>('all');
   const [searchQuery, setSearchQuery] = useState('');
 
   const handleAddSection = (template: SectionTemplate) => {
-    const { sectionRootId, nodes } = template.build();
+    const { sectionRootId, nodes } = template.build(theme);
     dispatch(addSection({ sectionRootId, nodes }));
   };
 

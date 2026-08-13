@@ -16,7 +16,34 @@ export interface SectionTemplate {
   description: string;
   category: 'navigation' | 'hero' | 'content' | 'ecommerce' | 'blog' | 'contact' | 'footer';
   thumbnail: string; // emoji fallback
-  build: () => { sectionRootId: string; nodes: Record<string, BuilderNode> };
+  build: (theme?: any) => { sectionRootId: string; nodes: Record<string, BuilderNode> };
+}
+
+// ─── Helper to adapt nodes to active theme palette ──────────────────────────
+export function applyThemeToNodes(nodes: Record<string, BuilderNode>, theme?: any): Record<string, BuilderNode> {
+  if (!theme) return nodes;
+  
+  Object.values(nodes).forEach((n) => {
+    if (!n.style) n.style = { desktop: {}, tablet: {}, mobile: {} };
+    if (!n.style.desktop) n.style.desktop = {};
+    const dStyle = n.style.desktop;
+
+    if (n.type === 'container') {
+      if (dStyle.backgroundColor === '#ffffff' || dStyle.backgroundColor === '#FFFFFF') {
+        dStyle.backgroundColor = theme.backgroundColor || '#09090b';
+      }
+    } else if (n.type === 'heading' || n.type === 'paragraph') {
+      if (dStyle.color === '#0F172A' || dStyle.color === '#1E293B' || dStyle.color === '#475569' || dStyle.color === '#000000') {
+        dStyle.color = theme.textColor || '#f4f4f5';
+      }
+    } else if (n.type === 'button') {
+      if (dStyle.backgroundColor === '#4F46E5' || dStyle.backgroundColor === '#6366f1' || dStyle.backgroundColor === '#0F172A') {
+        dStyle.backgroundColor = theme.primaryColor || '#6366f1';
+      }
+    }
+  });
+
+  return nodes;
 }
 
 // ─── Helper to quickly build a node ─────────────────────────────────────────
@@ -1220,54 +1247,28 @@ export const SECTION_TEMPLATES: SectionTemplate[] = [
     description: 'Frequently asked questions in a clean accordion-style list',
     category: 'content',
     thumbnail: '❓',
-    build: buildFaqSection,
-  },
-  {
-    id: 'team',
-    name: 'Team Members Grid',
-    description: 'Three team member cards with photo, name, and role',
-    category: 'content',
-    thumbnail: '👥',
-    build: buildTeamSection,
-  },
-  {
-    id: 'newsletter',
-    name: 'Newsletter Signup',
-    description: 'Dark email capture section with subscribe CTA',
-    category: 'content',
-    thumbnail: '📬',
-    build: buildNewsletterSection,
-  },
-  {
-    id: 'portfolio-gallery',
-    name: 'Portfolio Gallery Grid',
-    description: '6-image masonry-style portfolio grid with real photos',
-    category: 'content',
-    thumbnail: '🖼️',
-    build: buildPortfolioGallerySection,
-  },
   // ── E-Commerce ──
   {
-    id: 'product-showcase',
-    name: 'Product Feature Showcase',
-    description: 'Dark split-column product highlight with image and feature list',
+    id: 'product-hero',
+    name: 'Product Showcase (Split)',
+    description: 'Product image on left, title, price badge, specs & Buy Now CTA on right',
     category: 'ecommerce',
     thumbnail: '🛍️',
     build: buildProductShowcaseSection,
   },
   {
-    id: 'trust-badges',
-    name: 'Trust Badges Row',
-    description: '4 trust/reassurance badges: SSL, returns, shipping, payment',
+    id: 'product-grid-4',
+    name: 'Product Grid (4 Cards)',
+    description: 'Section header + 4 item cards with badges, prices, and Add to Cart buttons',
     category: 'ecommerce',
-    thumbnail: '🔒',
-    build: buildTrustBadgesSection,
+    thumbnail: '🏷️',
+    build: buildProductGridSection,
   },
   // ── Blog ──
   {
-    id: 'blog-grid',
-    name: 'Blog Post Grid',
-    description: 'Three blog post cards with image, category, title, and date',
+    id: 'blog-3col',
+    name: 'Blog Grid (3 Articles)',
+    description: 'Header + 3 article cards with category pills, dates, titles & Read More links',
     category: 'blog',
     thumbnail: '📰',
     build: buildBlogGridSection,
@@ -1299,6 +1300,17 @@ export const SECTION_TEMPLATES: SectionTemplate[] = [
     build: buildLightMinimalFooter,
   },
 ];
+
+export const SECTION_TEMPLATES: SectionTemplate[] = RAW_SECTION_TEMPLATES.map((t) => ({
+  ...t,
+  build: (theme?: any) => {
+    const res = t.build(theme);
+    return {
+      ...res,
+      nodes: applyThemeToNodes(res.nodes, theme),
+    };
+  },
+}));
 
 // ─── FULL STARTER SITE TEMPLATES ──────────────────────────────────────────────
 export function createStarterSiteTemplate(templateId: string): { rootNodeId: string; nodes: Record<string, BuilderNode> } {

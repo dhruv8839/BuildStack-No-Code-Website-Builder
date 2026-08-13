@@ -97,6 +97,33 @@ public class ProjectServiceImpl implements ProjectService {
 
     @Override
     @Transactional
+    public ProjectResponse duplicateProject(UUID id) {
+        Project sourceProject = findProjectOrThrow(id);
+        verifyAdminAccess(sourceProject.getWorkspace().getOrganization().getId());
+
+        String newName = sourceProject.getName() + " (Copy)";
+        String baseSlug = sourceProject.getSlug() + "-copy";
+        String newSlug = baseSlug;
+        int count = 1;
+
+        while (projectRepository.existsByWorkspaceIdAndSlug(sourceProject.getWorkspace().getId(), newSlug)) {
+            newSlug = baseSlug + "-" + count++;
+        }
+
+        Project clonedProject = Project.builder()
+                .name(newName)
+                .slug(newSlug)
+                .description(sourceProject.getDescription())
+                .workspace(sourceProject.getWorkspace())
+                .status(sourceProject.getStatus())
+                .build();
+
+        Project saved = projectRepository.save(clonedProject);
+        return projectMapper.toResponse(saved);
+    }
+
+    @Override
+    @Transactional
     public void deleteProject(UUID id) {
         Project project = findProjectOrThrow(id);
         verifyAdminAccess(project.getWorkspace().getOrganization().getId());

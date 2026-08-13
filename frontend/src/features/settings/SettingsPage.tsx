@@ -338,6 +338,18 @@ export function SettingsPage() {
           {activeTab === 'notifications' && (
             <SectionCard title="Notification Preferences" description="Control how and when BuildStack notifies you.">
               <div className="space-y-4">
+                <div className="space-y-3 pb-3 border-b border-[var(--border)]">
+                  <Label className="text-xs text-[var(--foreground)]">Notification Email Address</Label>
+                  <Input
+                    type="email"
+                    value={localStorage.getItem('buildstack_notification_email') || currentUser?.email || ''}
+                    onChange={(e) => localStorage.setItem('buildstack_notification_email', e.target.value)}
+                    placeholder="alerts@example.com"
+                    className="h-9 text-sm bg-[var(--background)] border-[var(--border)] text-[var(--foreground)]"
+                  />
+                  <p className="text-[11px] text-[var(--muted-foreground)]">Submissions will trigger email notifications sent to this address.</p>
+                </div>
+
                 {[
                   {
                     label: 'Form Submission Alerts',

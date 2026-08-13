@@ -1,4 +1,6 @@
 import { useState } from 'react'
+import { useSelector } from 'react-redux'
+import type { RootState } from '../../../app/store'
 import {
   useGetPagesForProjectQuery,
   useCreatePageMutation,
@@ -19,8 +21,18 @@ export function PagesPanel({ projectId, activePageId, onPageSelect }: PagesPanel
   const { data: pages, isLoading } = useGetPagesForProjectQuery(projectId)
   const [createPage, { isLoading: isCreating }] = useCreatePageMutation()
   const [deletePage] = useDeletePageMutation()
+  const isDirty = useSelector((state: RootState) => state.builder.isDirty)
 
   const [selectedSeoPage, setSelectedSeoPage] = useState<PageResponse | null>(null)
+
+  const handleSelectPage = (targetPageId: string) => {
+    if (targetPageId === activePageId) return
+    if (isDirty) {
+      const confirmSwitch = window.confirm('You have unsaved changes on this page. Switch to another page without saving?')
+      if (!confirmSwitch) return
+    }
+    onPageSelect(targetPageId)
+  }
 
   const handleCreatePage = async () => {
     const pageName = prompt('Enter page name:')
@@ -97,7 +109,7 @@ export function PagesPanel({ projectId, activePageId, onPageSelect }: PagesPanel
                   backgroundColor: isActive ? 'rgba(99,102,241,0.15)' : 'transparent',
                   border: isActive ? '1px solid rgba(99,102,241,0.3)' : '1px solid transparent',
                 }}
-                onClick={() => onPageSelect(page.id)}
+                onClick={() => handleSelectPage(page.id)}
                 onMouseEnter={(e) => {
                   if (!isActive) {
                     ;(e.currentTarget as HTMLDivElement).style.backgroundColor = 'rgba(255,255,255,0.04)'

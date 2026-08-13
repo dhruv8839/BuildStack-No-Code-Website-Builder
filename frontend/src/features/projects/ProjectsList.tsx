@@ -1,17 +1,25 @@
 import { useParams, Link } from 'react-router-dom'
 import {
   useGetProjectsForWorkspaceQuery,
+  useDuplicateProjectMutation,
   useDeleteProjectMutation,
 } from './projectsApiSlice'
 import { CreateProjectDialog } from './CreateProjectDialog'
 import { Button } from '../../components/ui/button'
-import { Loader2, Trash2, LayoutTemplate } from 'lucide-react'
+import { Loader2, Trash2, Copy, LayoutTemplate } from 'lucide-react'
 
 export function ProjectsList() {
   const { workspaceId } = useParams<{ workspaceId: string }>()
   
   const { data: projects, isLoading, error } = useGetProjectsForWorkspaceQuery(workspaceId!)
   const [deleteProject, { isLoading: isDeleting }] = useDeleteProjectMutation()
+  const [duplicateProject, { isLoading: isDuplicating }] = useDuplicateProjectMutation()
+
+  const handleDuplicate = (projectId: string) => {
+    if (workspaceId) {
+      duplicateProject({ projectId, workspaceId })
+    }
+  }
 
   if (isLoading) {
     return (
@@ -57,7 +65,16 @@ export function ProjectsList() {
                   <h3 className="font-semibold leading-none tracking-tight">
                     {project.name}
                   </h3>
-                  <div className="flex items-center space-x-2 opacity-0 transition-opacity group-hover:opacity-100">
+                  <div className="flex items-center space-x-1 opacity-0 transition-opacity group-hover:opacity-100">
+                    <Button
+                      variant="ghost"
+                      size="icon-sm"
+                      onClick={() => handleDuplicate(project.id)}
+                      disabled={isDuplicating}
+                      title="Duplicate project"
+                    >
+                      <Copy className="h-4 w-4 text-muted-foreground" />
+                    </Button>
                     <Button
                       variant="ghost"
                       size="icon-sm"

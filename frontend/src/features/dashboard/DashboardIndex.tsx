@@ -168,9 +168,46 @@ export function DashboardIndex() {
               style={{ backgroundColor: 'var(--primary)' }}
             >
               <Plus className="h-4 w-4" />
-              New Website Project
+              New Project
             </Button>
           </div>
+        </div>
+      </div>
+
+      {/* Activity & Stats Bar */}
+      <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
+        <div className="rounded-xl border border-[var(--border)] bg-[var(--card)] p-4 space-y-1">
+          <div className="flex items-center gap-2 text-[var(--muted-foreground)]">
+            <Globe className="h-4 w-4 text-[var(--primary)]" />
+            <span className="text-xs font-semibold uppercase tracking-wider">Total Projects</span>
+          </div>
+          <p className="text-2xl font-extrabold text-[var(--foreground)]">{allProjects.length}</p>
+        </div>
+
+        <div className="rounded-xl border border-[var(--border)] bg-[var(--card)] p-4 space-y-1">
+          <div className="flex items-center gap-2 text-[var(--muted-foreground)]">
+            <Folder className="h-4 w-4 text-purple-400" />
+            <span className="text-xs font-semibold uppercase tracking-wider">Workspaces</span>
+          </div>
+          <p className="text-2xl font-extrabold text-[var(--foreground)]">{allWorkspaces.length}</p>
+        </div>
+
+        <div className="rounded-xl border border-[var(--border)] bg-[var(--card)] p-4 space-y-1">
+          <div className="flex items-center gap-2 text-[var(--muted-foreground)]">
+            <Building2 className="h-4 w-4 text-emerald-400" />
+            <span className="text-xs font-semibold uppercase tracking-wider">Organizations</span>
+          </div>
+          <p className="text-2xl font-extrabold text-[var(--foreground)]">{organizations.length}</p>
+        </div>
+
+        <div className="rounded-xl border border-[var(--border)] bg-[var(--card)] p-4 space-y-1">
+          <div className="flex items-center gap-2 text-[var(--muted-foreground)]">
+            <Sparkles className="h-4 w-4 text-amber-400" />
+            <span className="text-xs font-semibold uppercase tracking-wider">AI Engine</span>
+          </div>
+          <p className="text-sm font-bold text-[var(--foreground)] truncate mt-1">
+            {localStorage.getItem('buildstack_gemini_key') ? 'Custom Gemini Key' : 'Smart Synthesizer'}
+          </p>
         </div>
       </div>
 

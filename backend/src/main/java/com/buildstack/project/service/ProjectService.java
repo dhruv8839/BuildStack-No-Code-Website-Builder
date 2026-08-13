@@ -12,5 +12,6 @@ public interface ProjectService {
     ProjectResponse getProjectById(UUID id);
     List<ProjectResponse> getAllProjectsForWorkspace(UUID workspaceId);
     ProjectResponse updateProject(UUID id, ProjectUpdateRequest request);
+    ProjectResponse duplicateProject(UUID id);
     void deleteProject(UUID id);
 }

@@ -62,6 +62,37 @@ export default function PreviewShell() {
     }
   }, [theme?.fontFamily]);
 
+  // Dynamic SEO Meta Tags injection
+  const rootNode = useSelector((state: RootState) => rootNodeId ? state.builder.nodes[rootNodeId] : null);
+  useEffect(() => {
+    const seo = rootNode?.settings?.seo || {};
+    const title = seo.title || 'BuildStack Published Page';
+    const description = seo.description || '';
+    const keywords = seo.keywords || '';
+
+    document.title = title;
+
+    let descMeta = document.querySelector('meta[name="description"]');
+    if (description) {
+      if (!descMeta) {
+        descMeta = document.createElement('meta');
+        descMeta.setAttribute('name', 'description');
+        document.head.appendChild(descMeta);
+      }
+      descMeta.setAttribute('content', description);
+    }
+
+    let kwMeta = document.querySelector('meta[name="keywords"]');
+    if (keywords) {
+      if (!kwMeta) {
+        kwMeta = document.createElement('meta');
+        kwMeta.setAttribute('name', 'keywords');
+        document.head.appendChild(kwMeta);
+      }
+      kwMeta.setAttribute('content', keywords);
+    }
+  }, [rootNode?.settings?.seo]);
+
   if (!pageId) {
     return (
       <div className="flex h-screen w-screen items-center justify-center bg-background text-destructive">
